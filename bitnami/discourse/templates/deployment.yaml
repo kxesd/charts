@@ -123,6 +123,13 @@ spec:
                   name: {{ include "discourse.smtp.secretName" . }}
                   key: smtp-password
             {{- end }}
+            {{- if (include "discourse.maxmind.enabled" .) }}
+            - name: DISCOURSE_MAXMIND_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "discourse.maxmind.secretName" . }}
+                  key: maxmind-license-key
+            {{- end }}
             {{- if .Values.discourse.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.discourse.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}

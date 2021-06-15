@@ -37,7 +37,7 @@ Return the proper Docker image registry secret names
 Return true if a secret object for Discourse should be created
 */}}
 {{- define "discourse.createSecret" -}}
-{{- if or (not .Values.discourse.existingSecret) (and (not .Values.discourse.smtp.existingSecret) .Values.discourse.smtp.password .Values.discourse.smtp.enabled) }}
+{{- if or (not .Values.discourse.existingSecret) (and (not .Values.discourse.maxmind.existingSecret) .Values.discourse.maxmind.key) (and (not .Values.discourse.smtp.existingSecret) .Values.discourse.smtp.password .Values.discourse.smtp.enabled) }}
     {{- true -}}
 {{- end -}}
 {{- end -}}
@@ -69,6 +69,26 @@ Return true if Discourse SMTP uses password authentication
 */}}
 {{- define "discourse.smtp.password.enabled" -}}
 {{- if and (or .Values.discourse.smtp.password .Values.discourse.smtp.existingSecret) .Values.discourse.smtp.enabled }}
+    {{- true -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the Discourse Maxmind secret name
+*/}}
+{{- define "discourse.maxmind.secretName" -}}
+{{- if .Values.discourse.maxmind.existingSecret }}
+    {{- printf "%s" .Values.discourse.maxmind.existingSecret -}}
+{{- else -}}
+    {{- printf "%s-discourse" (include "common.names.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return true if Discourse Maxmind license key is defined
+*/}}
+{{- define "discourse.maxmind.enabled" -}}
+{{- if or .Values.discourse.maxmind.key .Values.discourse.maxmind.existingSecret }}
     {{- true -}}
 {{- end -}}
 {{- end -}}

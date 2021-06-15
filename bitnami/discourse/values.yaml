@@ -163,6 +163,17 @@ discourse:
     ##
     existingSecret: ''
 
+  ## Discourse Maxmind License Key
+  ##
+  maxmind:
+    ## Key
+    key: ''
+    ## Name of existing secret object containing the password
+    ## the secret should contain the following key:
+    ## maxmind-license-key
+    ##
+    existingSecret: ''
+
   ## An array to add extra env vars
   ## For example:
   ## extraEnvVars:
